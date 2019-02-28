@@ -2,6 +2,7 @@ package assessment.fileencryptdecrypt;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class EncryptedPasswordLogin {
-
+	List<Account> newAccount = new ArrayList<Account>();
 	public List<Account> register(){
-		List<Account> newAccount = new ArrayList<Account>();
+
 		Scanner scan = new Scanner(System.in);
 
 		System.out.println("REGISTER FORM" + "\n\n");
@@ -48,9 +49,10 @@ public class EncryptedPasswordLogin {
 
 					}
 				}
-
 			}
 		}
+
+
 		return newAccount;
 
 	}
@@ -86,11 +88,61 @@ public class EncryptedPasswordLogin {
 		return null;
 	}
 	public List<Account> readFile(String listOfAccounts){
+		List<Account> listFromFile = new ArrayList<Account>();
+		FileReader file;
+        try {
+            file = new FileReader(listOfAccounts);
+            Scanner scanNew = new Scanner(file);
 
-		return null;
+            while (scanNew.hasNext()){
+                String dataOfAllAccounts = scanNew.next();
+
+                String[] values = dataOfAllAccounts.split(",");
+
+                listFromFile.add(new Account(values[0], values[1]));
+
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+		return listFromFile;
 
 	}
 	public void writeFile(List<Account> registeredAccount){
+		File file = null;
+        try{
+            String filename = "listOfAccounts.csv";
 
+            file = new File (filename);
+
+            if(!file.exists()) {
+                file.createNewFile();
+
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                for(Account str: newAccount) {
+                	bw.write(str.getUsername()+","+str.getPassword());
+                	}
+
+                bw.close();
+                System.out.println("File Created");
+            }else{
+
+
+                file.delete();
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                for(Account str: newAccount) {
+                	bw.write(str.getUsername()+","+str.getPassword());
+                	}
+                bw.close();
+                System.out.println("File replaced");
+
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 	}
 }

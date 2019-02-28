@@ -9,16 +9,27 @@ public class Main {
 		EncryptedPasswordLogin enc = new EncryptedPasswordLogin();
 		Scanner scan = new Scanner(System.in);
 
-		System.out.println("ENTER 1 to register, ENTER 2 to Login");
-		int choose = scan.nextInt();
 
+		boolean flag = true;
+		while(flag){
+			System.out.println("ENTER 1 to register, ENTER 2 to Login, ENTER 3 to exit");
+			int choose = scan.nextInt();
 
-		switch(choose){
-		case 1:
-			enc.register();
-		case 2:
-			enc.login();
+			switch(choose){
+			case 1:
+				enc.register();
+				break;
+			case 2:
+				enc.login();
+				flag = false;
+				break;
+
+			case 3:
+				flag = false;
+				break;
+			}
+			}
 		}
-	}
+
 
 }
