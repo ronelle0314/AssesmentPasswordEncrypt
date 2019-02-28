@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class EncryptedPasswordLogin {
 	List<Account> newAccount = new ArrayList<Account>();
 	List<Account> existingAccounts = new ArrayList<Account>();
-	
+
 	public List<Account> register(){
 
 		Scanner scan = new Scanner(System.in);
@@ -53,8 +53,8 @@ public class EncryptedPasswordLogin {
 
 					}
 				}
-			
-		
+
+
 
 
 		return newAccount;
@@ -64,7 +64,7 @@ public class EncryptedPasswordLogin {
 	public Account login(){
 
 		Scanner scan = new Scanner(System.in);
-
+		boolean log = false;
 		System.out.println("LOGIN FORM"+ "\n\n");
 
 		System.out.println("Enter Username");
@@ -83,9 +83,12 @@ public class EncryptedPasswordLogin {
 				System.out.println("SUCCESSFULLY LOGIN");
 				System.out.println("username: " + checkAccount.getUsername());
 				System.out.println("Encrypted Password: " + checkAccount.getPassword());
-			}else{
-				System.out.println("No Accounts Found");
-			}
+				log = true;
+			}	
+		}
+		
+		if(!log==true){
+			System.out.println("No Accounts Found");
 		}
 
 
