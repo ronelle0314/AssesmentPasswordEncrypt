@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 public class EncryptedPasswordLogin {
 	List<Account> newAccount = new ArrayList<Account>();
+	List<Account> existingAccounts = new ArrayList<Account>();
+	
 	public List<Account> register(){
 
 		Scanner scan = new Scanner(System.in);
@@ -24,7 +26,8 @@ public class EncryptedPasswordLogin {
 			if(username.equals(checkUsername.getUsername())){
 				System.out.println("Sorry Username Already exist");
 				return null;
-			}else{
+			}
+		}
 				System.out.println("Enter Password");
 
 				boolean flag = true;
@@ -42,15 +45,16 @@ public class EncryptedPasswordLogin {
 						newAccount.add(new Account(username, encodedPassword));
 
 						writeFile(newAccount);
-
+						newAccount.clear();
+						existingAccounts.clear();
 						System.out.println("Added new Account");
 
 						return newAccount;
 
 					}
 				}
-			}
-		}
+			
+		
 
 
 		return newAccount;
@@ -111,6 +115,11 @@ public class EncryptedPasswordLogin {
 	}
 	public void writeFile(List<Account> registeredAccount){
 		File file = null;
+
+		for(Account existing : readFile("listOfAccounts.csv")){
+			existingAccounts.add(new Account(existing.getUsername(), existing.getPassword()));
+		}
+
         try{
             String filename = "listOfAccounts.csv";
 
@@ -122,9 +131,11 @@ public class EncryptedPasswordLogin {
                 FileWriter fw = new FileWriter(file.getAbsoluteFile());
                 BufferedWriter bw = new BufferedWriter(fw);
                 for(Account str: newAccount) {
-                	bw.write(str.getUsername()+","+str.getPassword());
+                	bw.write(str.getUsername()+","+str.getPassword()+"\n");
                 	}
-
+                for(Account str: existingAccounts){
+                	bw.write(str.getUsername()+","+str.getPassword()+"\n");
+                }
                 bw.close();
                 System.out.println("File Created");
             }else{
@@ -135,8 +146,11 @@ public class EncryptedPasswordLogin {
                 FileWriter fw = new FileWriter(file.getAbsoluteFile());
                 BufferedWriter bw = new BufferedWriter(fw);
                 for(Account str: newAccount) {
-                	bw.write(str.getUsername()+","+str.getPassword());
+                	bw.write(str.getUsername()+","+str.getPassword()+"\n");
                 	}
+                for(Account str: existingAccounts){
+                	bw.write(str.getUsername()+","+str.getPassword()+"\n");
+                }
                 bw.close();
                 System.out.println("File replaced");
 
